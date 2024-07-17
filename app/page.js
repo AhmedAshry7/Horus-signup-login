@@ -57,6 +57,9 @@ import Horus from "../app/assets/Horus.png";
   
     );
   }
+  else{
+    router.push('/login');
+  }
   } 
   
 
