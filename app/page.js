@@ -7,11 +7,13 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import styles from "./page.module.css";
 import Horus from "../app/assets/Horus.png";
+import toast from "react-hot-toast";
 
 
  function Home() {
   const auth = getAuth(app);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const handleSignOut =()=>{
     router.push('/login');
@@ -25,9 +27,9 @@ import Horus from "../app/assets/Horus.png";
         if (docSnap.exists()) {
             const data = ({ id: docSnap.id, ...docSnap.data() })
             setUser(data);
-            console.log(data);
+            setLoading(false);
         } else {
-          console.log('No such document!');
+          toast.error('No such document!',{position:"bottom-center"});
         }
       } else {
         setUser(null);
@@ -36,7 +38,7 @@ import Horus from "../app/assets/Horus.png";
     });
     return () => unsubscribe();
   }, [auth, router]);
-  if(user){
+  if(!loading){
     return (
       <div>
         <div className={styles.head}>
